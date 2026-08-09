@@ -1,8 +1,6 @@
-interface ThrottleControlFunctions {
+export interface ThrottleControlFunctions {
   isPending(): boolean;
-
   cancel(): void;
-
   flush(): void;
 }
 
@@ -11,6 +9,6 @@ export interface ThrottleOptions {
   trailing?: boolean;
 }
 
-export type ThrottledState<F extends (...args: any[]) => ReturnType<F>> = ((
-  ...args: Parameters<F>
+export type ThrottledState<Args extends any[]> = ((
+  ...args: Args
 ) => void) & ThrottleControlFunctions;

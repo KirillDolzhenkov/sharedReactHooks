@@ -1,1 +1,1 @@
-export { default } from './useIsMounted.ts';
+export { default } from './useIsMounted';

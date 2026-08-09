@@ -10,10 +10,10 @@ import type { DebouncedState }        from './useDebounceCallback.types.ts';
  * - `cancel()`    — cancels the scheduled call
  * - `flush()`     — immediately executes the function (if it was scheduled)
  *
- * @template F Type of the function being debounced
- * @param {F} callback The function to debounce
+ * @template Args Tuple of arguments accepted by the function being debounced
+ * @param {(...args: Args) => void} callback The function to debounce
  * @param {number} [delay=300] Delay in milliseconds
- * @returns {DebouncedState<F>} Debounced function with control methods
+ * @returns {DebouncedState<Args>} Debounced function with control methods
  *
  * @example
  * const debouncedSearch = useDebounceCallback((query: string) => {
@@ -33,12 +33,12 @@ import type { DebouncedState }        from './useDebounceCallback.types.ts';
  */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function useDebounceCallback<F extends (...args: any[]) => ReturnType<F>>(
-  callback: F,
+function useDebounceCallback<Args extends any[]>(
+  callback: (...args: Args) => void,
   delay = 300,
-): DebouncedState<F> {
+): DebouncedState<Args> {
   const timerRef    = useRef<null | ReturnType<typeof setTimeout>>(null);
-  const argsRef     = useRef<Parameters<F> | null>(null);
+  const argsRef     = useRef<Args | null>(null);
   const callbackRef = useRef(callback);
 
   callbackRef.current = callback;
@@ -52,7 +52,7 @@ function useDebounceCallback<F extends (...args: any[]) => ReturnType<F>>(
   }, [delay]);
 
   return useMemo(() => {
-    const debounced = (...args: Parameters<F>) => {
+    const debounced = (...args: Args) => {
       argsRef.current = args;
 
       if (timerRef.current != null) {
@@ -65,12 +65,12 @@ function useDebounceCallback<F extends (...args: any[]) => ReturnType<F>>(
         argsRef.current = null;
 
         if (argsToUse != null) {
-          callbackRef.current?.(...argsToUse);
+          Reflect.apply(callbackRef.current, undefined, argsToUse);
         }
       }, delay);
     };
 
-    const func = debounced as DebouncedState<F>;
+    const func = debounced as DebouncedState<Args>;
 
     func.isPending = () => {
       return !!timerRef.current;
@@ -91,9 +91,9 @@ function useDebounceCallback<F extends (...args: any[]) => ReturnType<F>>(
       if (argsRef.current != null) {
         const args = argsRef.current;
         argsRef.current = null;
-        callbackRef.current?.(...args);
+        Reflect.apply(callbackRef.current, undefined, args);
       }
-    }
+    };
 
     return func;
   }, [delay]);

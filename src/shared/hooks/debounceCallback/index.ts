@@ -1,1 +1,2 @@
-export { default } from './useDebounceCallback.ts';
+export { default } from './useDebounceCallback';
+export type { ControlFunctions, DebouncedState } from './useDebounceCallback.types';
