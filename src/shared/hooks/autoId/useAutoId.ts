@@ -20,7 +20,7 @@ import { useId } from 'react';
  *   );
  * };
  */
-const useAutoId = (id?: string) => {
+const useAutoId = (id?: string): string => {
   const generatedId = useId();
 
   return id ?? generatedId;

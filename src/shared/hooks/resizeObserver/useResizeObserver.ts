@@ -32,7 +32,7 @@ function useResize(element?: Element | null, callback?: UseResizeCallback) {
       return;
     }
     const resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[], observer: ResizeObserver) => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         callback?.(entry, observer);
       }
     });
@@ -40,7 +40,7 @@ function useResize(element?: Element | null, callback?: UseResizeCallback) {
     return () => {
       resizeObserver.disconnect();
     };
-  }, [element]);
+  }, [callback, element]);
 }
 
 export default useResize;
