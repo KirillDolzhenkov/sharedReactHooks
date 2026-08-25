@@ -31,12 +31,17 @@ function useResize(element?: Element | null, callback?: UseResizeCallback) {
     if (!element) {
       return;
     }
-    const resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[], observer: ResizeObserver) => {
-      for (const entry of entries) {
-        callback?.(entry, observer);
-      }
-    });
+    const resizeObserver = new ResizeObserver(
+      (
+        entries: ResizeObserverEntry[],
+        observer: ResizeObserver,
+      ) => {
+        for (const entry of entries) {
+          callback?.(entry, observer);
+        }
+      });
     resizeObserver.observe(element);
+
     return () => {
       resizeObserver.disconnect();
     };
