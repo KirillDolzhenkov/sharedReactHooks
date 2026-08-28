@@ -1,1 +1,1 @@
-export { default } from './useClickTooltip.tsx';
+export { default } from './useClickTooltip';

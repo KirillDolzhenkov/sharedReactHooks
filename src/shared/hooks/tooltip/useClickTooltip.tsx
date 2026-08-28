@@ -5,7 +5,35 @@ import './useClickTooltip.styles.css';
 
 import { ClickTooltipEvent, UseClickTooltipTypes } from './useClickTooltip.types';
 
-const useClickTooltip = function(values: UseClickTooltipTypes) {
+/**
+ * Shows a short message at the pointer via a portal to `document.body`.
+ * Closes itself after `duration`.
+ *
+ * @param {UseClickTooltipTypes} values
+ * @param {number} [values.duration=500] Visible duration in milliseconds.
+ * @param {string} values.message Tooltip text.
+ * @returns {{
+ *   show: (event: ClickTooltipEvent) => void,
+ *   tooltip: React.ReactNode,
+ * }}
+ * `show` — call from a click handler with the event.
+ * `tooltip` — render once in JSX; `null` while hidden.
+ *
+ * @example
+ * const { show, tooltip } = useClickTooltip({ message: 'Done' });
+ *
+ * return (
+ *   <>
+ *     {tooltip}
+ *     <button onClick={show}>…</button>
+ *   </>
+ * );
+ */
+
+const useClickTooltip = (values: UseClickTooltipTypes): {
+    show: (event: ClickTooltipEvent) => void;
+    tooltip: React.ReactNode;
+} => {
   const {
           duration = 500,
           message,

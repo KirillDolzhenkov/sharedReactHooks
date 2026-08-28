@@ -1,4 +1,3 @@
-
 export interface UseClickTooltipTypes {
   duration?: number;
   message: string;
