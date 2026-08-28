@@ -1,0 +1,13 @@
+.click-tooltip {
+  background-color: #333;
+  border-radius:    3px;
+  color:            #fff;
+  font-size:        13px;
+  line-height:      1.54;
+  max-width:        240px;
+  padding:          7px 12px;
+  pointer-events:   none;
+  position:         fixed;
+  white-space:      nowrap;
+  z-index:          9999;
+}
